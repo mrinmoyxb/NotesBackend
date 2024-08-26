@@ -2,14 +2,14 @@ const mongoose = require("mongoose")
 
 const noteSchema = new mongoose.Schema({
     noteId: {
+        type: Number,
+        required: true
+    },
+    noteheading: {
         type: String,
         required: true
     },
-    heading: {
-        type: String,
-        required: true
-    },
-    body: {
+    notebody: {
         type: String
     }
 }, {timestamp: true})

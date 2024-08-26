@@ -1,8 +1,8 @@
-const { response } = require("express")
+const express = require("express")
 const Note = require("../model/notesModel")
 
 //* GET notes
-async function getAllNotes(req, res){
+async function handleGetAllNotes(req, res){
     try{
         const allNotes = await Note.find()
         if(!allNotes){
@@ -17,17 +17,19 @@ async function getAllNotes(req, res){
 }
 
 //* POST notes
-async function postAllNotes(req, res){
+async function handlePostAllNotes(req, res){
     try{
-        if(!req.body || !req.body.heading){
+        if(!req.body || !req.body.noteheading){
+            console.log("body: ", req.body)
+            console.log("body: ", req.body.noteheading)
             return res.status(403).json({response: "forbidden request"})
         }
         else{
-            const countDocument = Note.countDocument()
+            const countDocument = await Note.countDocuments()
             const note = await Note.create({
                 noteId: countDocument+1,
-                heading: req.body.heading,
-                body: req.body.body
+                noteheading: req.body.noteheading,
+                notebody: req.body.notebody
             })
             return res.status(200).json({response: "added notes"})
         }
@@ -37,6 +39,6 @@ async function postAllNotes(req, res){
 }
 
 module.exports = {
-    getAllNotes,
-    postAllNotes
+    handleGetAllNotes,
+    handlePostAllNotes
 }

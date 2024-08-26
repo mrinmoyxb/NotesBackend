@@ -1,15 +1,28 @@
 const express = require("express")
-const {connectMongoDB} = require("./connection")
-const app = express()
+const {connectMongoDBAtlas} = require("./connection")
+const router = require("./router/notesRouter")
 require("dotenv").config()
 
-connectMongoDB()
+const app = express()
+
+//* database
+connectMongoDBAtlas()
 .then(()=>{
-    console.log("MongoDB connected")
+    console.log("Connected to MongoDB Atlas")
 })
-.catch((error)=>{
-    console.log("Sorry couldn't connect to MongoDB, ",error)
+.catch(()=>{
+    console.log("Couldn't connect to MongoDB Atlas")
 })
+
+//* middlewares
+app.use(express.urlencoded({extended: false}))
+app.use(express.json())
+
+app.get("/",(req, res)=>{
+    return res.json({r: "homepage"})
+})
+
+app.use("/api", router)
 
 app.listen(process.env.PORT, ()=>{
     console.log("Server is running on PORT ", process.env.PORT)

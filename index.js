@@ -1,6 +1,7 @@
 const express = require("express")
 const {connectMongoDBAtlas} = require("./connection")
-const router = require("./router/notesRouter")
+const notesRouter = require("./router/notesRouter")
+const authRouter  = require("./router/userRouter")
 require("dotenv").config()
 
 const app = express()
@@ -22,7 +23,8 @@ app.get("/",(req, res)=>{
     return res.json({r: "homepage"})
 })
 
-app.use("/api", router)
+app.use("/auth", authRouter)
+app.use("/api", notesRouter)
 
 app.listen(process.env.PORT, ()=>{
     console.log("Server is running on PORT ", process.env.PORT)

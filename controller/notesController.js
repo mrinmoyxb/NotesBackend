@@ -20,8 +20,6 @@ async function handleGetAllNotes(req, res){
 async function handlePostAllNotes(req, res){
     try{
         if(!req.body || !req.body.noteheading){
-            console.log("body: ", req.body)
-            console.log("body: ", req.body.noteheading)
             return res.status(403).json({response: "forbidden request"})
         }
         else{

@@ -6,7 +6,7 @@ require("dotenv").config()
 //* signup
 async function handleSignUp(req, res){
     try{
-        if(!req.body || !req.body.email || !req.body.password){
+        if(!req.body || !req.body.name || !req.body.email || !req.body.password){
             return res.status(404).json({response: "enter all details"})
         }
         if(req.body.password.length < 6){
@@ -16,7 +16,7 @@ async function handleSignUp(req, res){
             const checkExistingUser = await User.findOne({email: req.body.email})
             if(!checkExistingUser){
                 const hashPassword = await bcrypt.hash(req.body.password, 10)
-                const newUser = await User.createOne({
+                const newUser = await User.create({
                     name: req.body.name,
                     email: req.body.email,
                     password: hashPassword
@@ -44,7 +44,7 @@ async function handleLogin(req, res){
                 const checkPassword = await bcrypt.compare(req.body.password, existingUser.password)
                 if(checkPassword){
                     const accessToken = jwt.sign({userId: existingUser._id, email: existingUser.email}, process.env.ACCESS_TOKEN, {expiresIn: "30s"})
-                    const refreshToken = jwt.sign({userId: existingUser._id, email: existingUser.email}, process.env.REFRESH_TOKEN, {expiresIn: ""})
+                    const refreshToken = jwt.sign({userId: existingUser._id, email: existingUser.email}, process.env.REFRESH_TOKEN, {expiresIn: "1h"})
                     const updateUser = await User.findAndModify({_id: existingUser._id}, {$set: {refreshToken: refreshToken}})
                     return res.status(200).json({response: "Welcome", token: refreshToken})
                 }

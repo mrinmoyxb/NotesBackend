@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken")
 const User = require("../model/userModel")
 require("dotenv").config()
 
+//* it provides new access token after verifying the refresh token
+
 async function handleRefreshToken(req, res){
     try{
         const cookies = req.cookies

@@ -1,8 +1,11 @@
 const express = require("express")
 const {connectMongoDBAtlas} = require("./connection")
+
 const notesRouter = require("./router/notesRouter")
 const authRouter  = require("./router/authRouter")
-const {verifyJwtToken} = require("../middleware/verifyJWT")
+const refreshTokenRouter = require("./router/refreshRoute")
+
+const {verifyJwtToken} = require("./middleware/verifyJWT")
 const cookieParser = require("cookie-parser")
 require("dotenv").config()
 
@@ -26,10 +29,12 @@ app.use(cookieParser())
 app.get("/",(req, res)=>{
     return res.json({r: "homepage"})
 })
+app.use("/auth", authRouter)
+app.use("/refresh", refreshTokenRouter)
 
 
-
-app.use("/auth", verifyJwtToken, authRouter)
+//* must satisfy the token to access notes
+app.use(verifyJwtToken)
 app.use("/api", notesRouter)
 
 app.listen(process.env.PORT, ()=>{

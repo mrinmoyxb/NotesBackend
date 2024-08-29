@@ -48,7 +48,7 @@ async function handleLogin(req, res){
                     const updateUser = await User.findOneAndUpdate({_id: existingUser._id}, {$set: {refreshToken: refreshToken}})
                     
                     //* we can send tokens both in JSON format and in cookies
-                    res.cookie("jwt-token", refreshToken, {httpOnly: true, maxAge: 24*60*60*1000})
+                    res.cookie("jwt_token", refreshToken, {httpOnly: true, maxAge: 24*60*60*1000, secure: true})
                     return res.status(200).json({response: "success", access_token: accessToken})
                 }
                 else{

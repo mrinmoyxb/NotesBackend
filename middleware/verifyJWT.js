@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
-function verifyJwtToken(req, res, next){
+const verifyJwtToken = (req, res, next) => {
     try{
         const authHeader = req.headers["authorization"]
         if(!authHeader){
@@ -15,10 +15,8 @@ function verifyJwtToken(req, res, next){
                     if(err){
                         return res.status(403).json({response: "invalid token"})
                     }
-                    else{
-                        res.status(200).json({response : decoded.email})
-                        next();
-                    }
+                    console.log({email: decoded.email})
+                    next();
             })
         }
     }catch(error){

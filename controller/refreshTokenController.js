@@ -8,7 +8,6 @@ require("dotenv").config()
 async function handleRefreshToken(req, res){
     try{
         const cookies = req.cookies
-        console.log("C: ", cookies)
         if(!cookies?.jwt_token){
             return res.status(401).json({response: "cookies not found"})
         }

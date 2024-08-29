@@ -43,8 +43,8 @@ async function handleLogin(req, res){
             if(existingUser){
                 const checkPassword = await bcrypt.compare(req.body.password, existingUser.password)
                 if(checkPassword){
-                    const accessToken = jwt.sign({userId: existingUser._id, email: existingUser.email}, process.env.ACCESS_TOKEN, {expiresIn: "30s"})
-                    const refreshToken = jwt.sign({userId: existingUser._id, email: existingUser.email}, process.env.REFRESH_TOKEN, {expiresIn: "1h"})
+                    const accessToken = jwt.sign({userId: existingUser._id, email: existingUser.email}, process.env.ACCESS_TOKEN, {expiresIn: "1d"})
+                    const refreshToken = jwt.sign({userId: existingUser._id, email: existingUser.email}, process.env.REFRESH_TOKEN)
                     const updateUser = await User.findOneAndUpdate({_id: existingUser._id}, {$set: {refreshToken: refreshToken}})
                     
                     //* we can send tokens both in JSON format and in cookies

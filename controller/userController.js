@@ -45,8 +45,8 @@ async function handleLogin(req, res){
                 if(checkPassword){
                     const accessToken = jwt.sign({userId: existingUser._id, email: existingUser.email}, process.env.ACCESS_TOKEN, {expiresIn: "30s"})
                     const refreshToken = jwt.sign({userId: existingUser._id, email: existingUser.email}, process.env.REFRESH_TOKEN, {expiresIn: "1h"})
-                    const updateUser = await User.findAndModify({_id: existingUser._id}, {$set: {refreshToken: refreshToken}})
-                    return res.status(200).json({response: "Welcome", token: refreshToken})
+                    const updateUser = await User.findOneAndUpdate({_id: existingUser._id}, {$set: {refreshToken: refreshToken}})
+                    return res.status(200).json({response: "success", token: refreshToken})
                 }
                 else{
                     return res.status(400).json({response: "enter valid password"})

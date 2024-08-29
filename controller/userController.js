@@ -46,7 +46,10 @@ async function handleLogin(req, res){
                     const accessToken = jwt.sign({userId: existingUser._id, email: existingUser.email}, process.env.ACCESS_TOKEN, {expiresIn: "30s"})
                     const refreshToken = jwt.sign({userId: existingUser._id, email: existingUser.email}, process.env.REFRESH_TOKEN, {expiresIn: "1h"})
                     const updateUser = await User.findOneAndUpdate({_id: existingUser._id}, {$set: {refreshToken: refreshToken}})
-                    return res.status(200).json({response: "success", token: refreshToken})
+                    
+                    //* we can send tokens both in JSON format and in cookies
+                    res.cookie("jwt-token", refreshToken, {httpOnly: true, maxAge: 24*60*60*1000})
+                    return res.status(200).json({response: "success", access_token: accessToken})
                 }
                 else{
                     return res.status(400).json({response: "enter valid password"})

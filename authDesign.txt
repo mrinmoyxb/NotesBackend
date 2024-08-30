@@ -1,0 +1,19 @@
+LOGIN - JWT - ACCESS TOKEN - REFRESH TOKEN
+
+1. When we login, server provides an access token and a refresh token. The validity or existence time period 
+of access token is less than that of refresh token. 
+
+2. Access token is provided in JSON format, refresh token is provided in the form of cookie with {httpOnly: true},
+in order to make it a bit more secure and is inaccessible to JS. Access tokens are directly provided to the user
+whereas refresh token is stored in DB for further use.
+
+3. We can access notes/data only with the help of a valid access token.
+
+4. Once the validaity of access token is over we can get a new access token with the help of our refresh
+token. We check for refresh token in cookies validate with the refresh token stored in DB. Once validated 
+successfully, the server provides a new access token.
+
+LOGOUT
+
+1. When we logout we can delete the access token in frontend and remove refresh token from database, now user can't
+access data or notes. We can again access our data with the help of a successfull login
